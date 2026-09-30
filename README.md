@@ -31,3 +31,22 @@ If you are developing a production application, we recommend enabling type-aware
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
 # Transacao-bancaria-front-end
+
+The structure follows a division into layers independent of frameworks, ensuring testability and ease of maintenance:
+
+```text
+src/
+├── domain/                  # [Regras de Negócio Core] Entidades e Objetos de Valor
+│   ├── entities/            # Account, Transaction
+│   └── value-objects/       # Money, AccountId, TransactionId
+├── use-cases/               # [Casos de Uso] Regras da Aplicação
+│   ├── transfer-money.ts    # Caso de uso de transferência em tempo real
+│   └── get-balance.ts       # Consulta de saldo com locking
+├── adapters/                # [Interfaces / Adaptadores]
+│   ├── controllers/         # Mapeamento REST / Websockets
+│   └── repositories/        # Interfaces dos Reposositórios
+└── infrastructure/          # [Detalhes de Frameworks e Drivers]
+    ├── database/            # Implementação TypeORM/Prisma (Com Locking)
+    ├── websockets/          # Servidor WS para notificações em tempo real
+    └── http/                # Express/Fastify ou NestJS
+```
