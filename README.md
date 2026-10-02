@@ -112,7 +112,7 @@ docker run -d \
   react-transferenciabancaria
 ```
 
-# ## 🛠️ Features Included
+## 🛠️ Features Included
 
 Real-time Balance updates: Integrated EventSource/SSE via useRealtimeAccount.ts.
 
