@@ -49,3 +49,73 @@ frontend/                                   <- Complete React interface
     └── package.json               
      # Express/Fastify ou NestJS
 ```
+## 🚀 Getting Started
+
+. Local Development Prerequisites
+
+. Node.js: v18+ or v20+
+
+Package Manager: npm or yarn
+
+1. **Install Dependencies**
+
+Navigate to the frontend/ directory and install the required modules:
+
+npm install
+
+
+### 2. Start Development Server
+
+Run the local Vite development server:
+
+npm run dev
+
+
+* **The application will be accessible at** ` http://localhost:5173.` 
+
+### 🐳 Docker Deployment
+
+The frontend uses a multi-stage Docker build:
+
+Build Stage: Compiles TypeScript & bundles React via Vite using Node.js.
+
+Production Stage: Serves optimized static assets using a lightweight Nginx server on port 80.
+
+Option A: Standard Docker Container Run
+
+Build the Docker Image:
+```bash
+docker build -t react-transferenciabancaria .
+```
+
+Run the Container:
+```bash
+docker run -d -p 80:80 --name react-transferenciabancaria react-transferenciabancaria
+```
+
+Option B: Isolated Run within Docker Network Subnet
+
+To attach the frontend container to an existing custom network (transferenciabancaria-network) alongside the backend API and MySQL database:
+
+Create Subnet Network (if not already created):
+```bash
+docker network create --driver bridge --subnet 172.28.0.0/16 transferenciabancaria-network
+```
+
+Run Frontend with Static IP:
+```bash
+docker run -d \
+  --name react-transferenciabancaria \
+  --network transferenciabancaria-network \
+  --ip 172.28.0.4 \
+  -p 80:80 \
+  react-transferenciabancaria
+```
+
+# ##🛠️ Features Included
+
+Real-time Balance updates: Integrated EventSource/SSE via useRealtimeAccount.ts.
+
+Idempotency Protection: Ensures duplicate key prevention when executing money transfers.
+
+Concurrency Stress Testing: Trigger multiple parallel requests directly from StressTestPanel.tsx to validate backend lock ordering and deadlock safety.
